@@ -18,6 +18,7 @@ func commandsConnection(m *Miniredis) {
 	m.srv.Register("QUIT", m.cmdQuit)
 	m.srv.Register("SELECT", m.cmdSelect)
 	m.srv.Register("SWAPDB", m.cmdSwapdb)
+	m.srv.Register("READONLY", m.cmdReadonly)
 }
 
 // PING
@@ -278,4 +279,9 @@ func (m *Miniredis) cmdQuit(c *server.Peer, cmd string, args []string) {
 	// QUIT isn't transactionfied and accepts any arguments.
 	c.WriteOK()
 	c.Close()
+}
+
+// READONLY, only receiving requests, not actually turning on readonly mode
+func (m *Miniredis) cmdReadonly(c *server.Peer, cmd string, args []string) {
+	c.WriteOK()
 }
